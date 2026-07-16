@@ -1,5 +1,5 @@
 import 'package:findit/Features/Auth/View/auth_page.dart';
-import 'package:findit/Features/Home/home_page.dart';
+import 'package:findit/Features/Home/View/home_page.dart';
 import 'package:findit/Features/Onboarding/onboarding_page.dart';
 import 'package:findit/Features/Splash/splash_screen.dart';
 import 'package:findit/Routes/app_routes.dart';

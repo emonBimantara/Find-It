@@ -47,4 +47,8 @@ class AuthController {
       password: password,
     );
   }
+
+  Future<void> logout() async {
+    await _repository.logout();
+  }
 }
