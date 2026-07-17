@@ -1,3 +1,4 @@
+import 'package:findit/Binding/initial_binding.dart';
 import 'package:findit/Routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -11,6 +12,8 @@ void main() async {
     url: dotenv.env['SUPABASE_URL']!,
     anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
+  
+  InitialBinding().dependencies();
 
   runApp(const MyApp());
 }

@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class AuthPage extends StatelessWidget {
   AuthPage({super.key});
 
-  final AuthController authController = Get.put(AuthController());
+  final AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -70,19 +70,26 @@ class AuthPage extends StatelessWidget {
                         child: authController.isLogin.value
                             ? LoginForm(
                                 key: const ValueKey("login"),
-                                emailController: authController.loginEmailController,
-                                passwordController: authController.loginPasswordController,
+                                emailController:
+                                    authController.loginEmailController,
+                                passwordController:
+                                    authController.loginPasswordController,
                                 isLoading: authController.isLoading.value,
                                 onLogin: () => authController.login(context),
                               )
                             : RegisterForm(
                                 key: const ValueKey("register"),
-                                usernameController: authController.registerUsernameController,
-                                emailController: authController.registerEmailController,
-                                passwordController: authController.registerPasswordController,
-                                confirmPasswordController: authController.registerConfirmPasswordController,
+                                usernameController:
+                                    authController.registerUsernameController,
+                                emailController:
+                                    authController.registerEmailController,
+                                passwordController:
+                                    authController.registerPasswordController,
+                                confirmPasswordController: authController
+                                    .registerConfirmPasswordController,
                                 isLoading: authController.isLoading.value,
-                                onRegister: () => authController.register(context),
+                                onRegister: () =>
+                                    authController.register(context),
                               ),
                       ),
                     ],

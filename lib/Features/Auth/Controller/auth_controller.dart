@@ -7,7 +7,8 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class AuthController extends GetxController {
-  final AuthRepository _repository = AuthRepository();
+  final AuthRepository _repository;
+  AuthController(this._repository);
 
   final isLogin = true.obs;
   final isLoading = false.obs;
@@ -88,8 +89,16 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> logout() async {
-    await _repository.logout();
+  Future<void> logout(BuildContext context) async {
+    try {
+      await _repository.logout();
+
+      SnackbarHelper.success(context, "Logged out successfully.");
+
+      context.go(AppRoutes.authPage);
+    } catch (e) {
+      SnackbarHelper.error(context, "Failed to logout.");
+    }
   }
 
   @override

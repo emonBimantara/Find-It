@@ -5,7 +5,7 @@ import 'package:findit/Widgets/item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:findit/Features/Home/Controller/home_controller.dart';
 import 'package:findit/Features/Auth/Controller/auth_controller.dart';
-import 'package:findit/Features/Auth/View/auth_page.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,8 +15,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final HomeController homeController = HomeController();
-  final AuthController authController = AuthController();
+  final HomeController homeController = Get.find<HomeController>();
+  final AuthController authController = Get.find<AuthController>();
 
   final TextEditingController searchController = TextEditingController();
   String selectedCategory = "all";
@@ -25,24 +25,6 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     searchController.dispose();
     super.dispose();
-  }
-
-  Future<void> _logout() async {
-    try {
-      await authController.logout();
-
-      if (!mounted) return;
-
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (_) => AuthPage()),
-        (route) => false,
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.toString())));
-    }
   }
 
   @override
@@ -68,8 +50,8 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   InkWell(
                     borderRadius: BorderRadius.circular(30),
-                    onTap: _logout,
-                    child: const Icon(Icons.person, size: 30),
+                    onTap: () => authController.logout(context),
+                    child: Icon(Icons.person, size: 30),
                   ),
                   Text(
                     "Find It",
@@ -94,11 +76,13 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //? Greeting text
-                    Text(
-                      "Hello, Emon!",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
+                    Obx(
+                      () => Text(
+                        "Hello, ${homeController.username.value}!",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
                       ),
                     ),
                     SizedBox(height: 5),
@@ -160,53 +144,46 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SizedBox(height: 16),
 
-                    FutureBuilder(
-                      future: homeController.getItems(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
+                    Obx(() {
+                      if (homeController.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
 
-                        if (snapshot.hasError) {
-                          return Text("Error: ${snapshot.error}");
-                        }
+                      if (homeController.items.isEmpty) {
+                        return const Center(child: Text("No items found"));
+                      }
 
-                        if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          return Text("No items found");
-                        }
+                      final items = homeController.items;
 
-                        final items = snapshot.data!;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ItemCard(item: items.first, isLarge: true),
 
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (items.isNotEmpty) ...[
-                              ItemCard(item: items[0], isLarge: true),
-                              const SizedBox(height: 16),
+                          SizedBox(height: 16),
 
-                              if (items.length > 1)
-                                GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: items.length - 1,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 12,
-                                        mainAxisSpacing: 12,
-                                        childAspectRatio: 0.77,
-                                      ),
-                                  itemBuilder: (context, index) {
-                                    final item = items[index + 1];
-                                    return ItemCard(item: item, isLarge: false);
-                                  },
-                                ),
-                            ],
-                          ],
-                        );
-                      },
-                    ),
+                          if (items.length > 1)
+                            GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: items.length - 1,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 12,
+                                    childAspectRatio: 0.77,
+                                  ),
+                              itemBuilder: (context, index) {
+                                return ItemCard(
+                                  item: items[index + 1],
+                                  isLarge: false,
+                                );
+                              },
+                            ),
+                        ],
+                      );
+                    }),
                   ],
                 ),
               ),

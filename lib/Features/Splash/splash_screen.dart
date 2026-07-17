@@ -1,5 +1,8 @@
-import 'package:findit/Features/Onboarding/onboarding_page.dart';
+import 'package:findit/Features/Auth/Repository/supabase_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:findit/Routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,15 +15,29 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _checkAppState();
+  }
 
-    Future.delayed(const Duration(seconds: 3), () {
-      if (!mounted) return;
+  Future<void> _checkAppState() async {
+    await Future.delayed(const Duration(seconds: 3));
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const OnboardingPage()),
-      );
-    });
+    if (!mounted) return;
+
+    final prefs = await SharedPreferences.getInstance();
+    final onboardingDone = prefs.getBool("onboarding_done") ?? false;
+
+    if (!onboardingDone) {
+      context.go(AppRoutes.onboardingPage);
+      return;
+    }
+
+    final session = SupabaseService.client.auth.currentSession;
+
+    if (session != null) {
+      context.go(AppRoutes.homePage);
+    } else {
+      context.go(AppRoutes.authPage);
+    }
   }
 
   @override
