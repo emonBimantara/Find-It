@@ -6,12 +6,14 @@ class LoginForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final VoidCallback onLogin;
+  final bool isLoading;
 
   const LoginForm({
     super.key,
     required this.emailController,
     required this.passwordController,
     required this.onLogin,
+    this.isLoading = false,
   });
 
   @override
@@ -71,7 +73,7 @@ class LoginForm extends StatelessWidget {
 
         SizedBox(height: 24),
 
-        CustomButton(text: "Login", onPressed: onLogin),
+        CustomButton(text: "Login", onPressed: onLogin, isLoading: isLoading),
       ],
     );
   }

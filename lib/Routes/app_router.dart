@@ -20,7 +20,7 @@ final GoRouter appRouter = GoRouter(
 
     GoRoute(
       path: AppRoutes.authPage,
-      builder: (context, state) => const AuthPage(),
+      builder: (context, state) => AuthPage(),
     ),
 
     GoRoute(

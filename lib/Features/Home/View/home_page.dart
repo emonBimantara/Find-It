@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const AuthPage()),
+        MaterialPageRoute(builder: (_) => AuthPage()),
         (route) => false,
       );
     } catch (e) {

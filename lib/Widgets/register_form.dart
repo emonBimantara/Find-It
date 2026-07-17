@@ -7,6 +7,7 @@ class RegisterForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
+  final bool isLoading;
 
   final VoidCallback onRegister;
 
@@ -17,6 +18,7 @@ class RegisterForm extends StatelessWidget {
     required this.passwordController,
     required this.confirmPasswordController,
     required this.onRegister,
+    this.isLoading = false,
   });
 
   @override
@@ -98,7 +100,11 @@ class RegisterForm extends StatelessWidget {
 
         SizedBox(height: 24),
 
-        CustomButton(text: "Create Account", onPressed: onRegister),
+        CustomButton(
+          text: "Create Account",
+          onPressed: onRegister,
+          isLoading: isLoading,
+        ),
       ],
     );
   }
