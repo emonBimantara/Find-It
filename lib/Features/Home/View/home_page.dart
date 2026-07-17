@@ -1,49 +1,32 @@
 import 'package:findit/Constants/item_categories.dart';
+import 'package:findit/Features/Auth/Controller/auth_controller.dart';
+import 'package:findit/Features/Home/Controller/home_controller.dart';
 import 'package:findit/Widgets/category_chip.dart';
 import 'package:findit/Widgets/custom_text_field.dart';
 import 'package:findit/Widgets/item_card.dart';
 import 'package:flutter/material.dart';
-import 'package:findit/Features/Home/Controller/home_controller.dart';
-import 'package:findit/Features/Auth/Controller/auth_controller.dart';
 import 'package:get/get.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   final HomeController homeController = Get.find<HomeController>();
   final AuthController authController = Get.find<AuthController>();
-
-  final TextEditingController searchController = TextEditingController();
-  String selectedCategory = "all";
-
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FF),
+      backgroundColor: Color(0xFFF9F9FF),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
-            //? App bar
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Color(0xFFE5E7EB), width: 1),
-                ),
+                border: Border(bottom: BorderSide(color: Color(0xFFE5E7EB))),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,6 +36,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () => authController.logout(context),
                     child: Icon(Icons.person, size: 30),
                   ),
+
                   Text(
                     "Find It",
                     style: TextStyle(
@@ -61,6 +45,7 @@ class _HomePageState extends State<HomePage> {
                       color: Color(0xFF3525CD),
                     ),
                   ),
+
                   Icon(Icons.notifications, size: 30, color: Color(0xFF3525CD)),
                 ],
               ),
@@ -75,32 +60,33 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    //? Greeting text
                     Obx(
                       () => Text(
                         "Hello, ${homeController.username.value}!",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
                         ),
                       ),
                     ),
+
                     SizedBox(height: 5),
+
                     Text(
                       "What are you looking for today?",
                       style: TextStyle(fontSize: 15, color: Color(0xFF464555)),
                     ),
+
                     SizedBox(height: 20),
 
-                    //? Search bar
                     CustomTextField(
-                      controller: searchController,
+                      controller: homeController.searchController,
                       hintText: "Search items...",
                       prefixIcon: Icon(Icons.search),
                     ),
+
                     SizedBox(height: 15),
 
-                    //? Category Slider
                     SizedBox(
                       height: 42,
                       child: ListView.builder(
@@ -108,21 +94,24 @@ class _HomePageState extends State<HomePage> {
                         itemCount: itemCategories.length,
                         itemBuilder: (context, index) {
                           final category = itemCategories[index];
-                          return CategoryChip(
-                            category: category,
-                            isSelected: selectedCategory == category.id,
-                            onTap: () {
-                              setState(() {
-                                selectedCategory = category.id;
-                              });
-                            },
+
+                          return Obx(
+                            () => CategoryChip(
+                              category: category,
+                              isSelected:
+                                  homeController.selectedCategory.value ==
+                                  category.id,
+                              onTap: () {
+                                homeController.changeCategory(category.id);
+                              },
+                            ),
                           );
                         },
                       ),
                     ),
+
                     SizedBox(height: 30),
 
-                    //? Latest Report
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -142,6 +131,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
+
                     SizedBox(height: 16),
 
                     Obx(() {
@@ -149,23 +139,23 @@ class _HomePageState extends State<HomePage> {
                         return const Center(child: CircularProgressIndicator());
                       }
 
-                      if (homeController.items.isEmpty) {
+                      final items = homeController.filteredItems;
+
+                      if (items.isEmpty) {
                         return const Center(child: Text("No items found"));
                       }
-
-                      final items = homeController.items;
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ItemCard(item: items.first, isLarge: true),
 
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
                           if (items.length > 1)
                             GridView.builder(
                               shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
+                              physics: NeverScrollableScrollPhysics(),
                               itemCount: items.length - 1,
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(

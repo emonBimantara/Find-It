@@ -32,7 +32,7 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.homePage,
       builder: (context, state) {
         HomeBinding().dependencies();
-        return const HomePage();
+        return HomePage();
       },
     ),
   ],
