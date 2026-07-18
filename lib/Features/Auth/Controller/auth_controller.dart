@@ -3,6 +3,7 @@ import 'package:findit/Features/Home/Controller/home_controller.dart';
 import 'package:findit/Routes/app_routes.dart';
 import 'package:findit/Utils/auth_error_message.dart';
 import 'package:findit/Utils/snackbar_helper.dart';
+import 'package:findit/Utils/phone_number_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -53,6 +54,10 @@ class AuthController extends GetxController {
   Future<void> register(BuildContext context) async {
     isLoading.value = true;
 
+    final phone = PhoneNumberHelper.normalize(
+      registerPhoneNumberController.text,
+    );
+
     try {
       if (registerUsernameController.text.trim().isEmpty) {
         throw Exception("Username is required");
@@ -79,11 +84,15 @@ class AuthController extends GetxController {
         throw Exception("WhatsApp number is required");
       }
 
+      if (!RegExp(r'^628\d{8,13}$').hasMatch(phone)) {
+        throw Exception("Please enter a valid WhatsApp number.");
+      }
+
       await _repository.register(
         username: registerUsernameController.text.trim(),
         email: registerEmailController.text.trim(),
         password: registerPasswordController.text,
-        phoneNumber: registerPhoneNumberController.text,
+        phoneNumber: phone,
       );
 
       SnackbarHelper.success(context, "Account created successfully");

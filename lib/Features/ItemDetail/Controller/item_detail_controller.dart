@@ -10,13 +10,13 @@ class ItemDetailController extends GetxController {
     final message =
         "Hi $username, I saw your report about '$itemTitle' on FindIt. I think this might be my item.";
 
-    final url = Uri.parse(
+    final uri = Uri.parse(
       "https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}",
     );
 
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
+    final success = await launchUrl(uri, mode: LaunchMode.externalApplication);
+
+    if (!success) {
       throw Exception("Could not open WhatsApp");
     }
   }
