@@ -80,7 +80,7 @@ class HomePage extends StatelessWidget {
                     CustomTextField(
                       controller: homeController.searchController,
                       hintText: "Search items...",
-                      prefixIcon: Icon(Icons.search),
+                      prefixIcon: const Icon(Icons.search),
                     ),
                     SizedBox(height: 15),
 
@@ -106,55 +106,65 @@ class HomePage extends StatelessWidget {
                         },
                       ),
                     ),
+
                     SizedBox(height: 30),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Latest Report",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => context.push(AppRoutes.viewAllPage),
-                          child: Text(
-                            "View all",
-                            style: TextStyle(
-                              color: Color(0xFF3525CD),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-
                     Obx(() {
-                      if (homeController.isLoading.value) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-
-                      final items = homeController.recentItems;
-
-                      if (items.isEmpty) {
-                        return Center(child: Text("No items found"));
-                      }
+                      final isSearching =
+                          homeController.searchQuery.value.isNotEmpty;
+                      final items = isSearching
+                          ? homeController.filteredItems
+                          : homeController.recentItems;
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ItemCard(item: items.first, isLarge: true),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                isSearching
+                                    ? "Search Results (${items.length})"
+                                    : "Latest Report",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25,
+                                ),
+                              ),
+                              if (!isSearching)
+                                GestureDetector(
+                                  onTap: () =>
+                                      context.push(AppRoutes.viewAllPage),
+                                  child: Text(
+                                    "View all",
+                                    style: TextStyle(
+                                      color: Color(0xFF3525CD),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
 
                           SizedBox(height: 16),
 
-                          if (items.length > 1)
+                          if (homeController.isLoading.value) ...[
+                            const Center(child: CircularProgressIndicator()),
+                          ] else if (items.isEmpty) ...[
+                            Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 20),
+                                child: Text(
+                                  "No items found",
+                                  style: TextStyle(color: Color(0xFF464555)),
+                                ),
+                              ),
+                            ),
+                          ] else if (isSearching) ...[
                             GridView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: items.length - 1,
+                              itemCount: items.length,
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
@@ -164,11 +174,40 @@ class HomePage extends StatelessWidget {
                                   ),
                               itemBuilder: (context, index) {
                                 return ItemCard(
-                                  item: items[index + 1],
+                                  item: items[index],
                                   isLarge: false,
                                 );
                               },
                             ),
+                          ] else ...[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ItemCard(item: items.first, isLarge: true),
+                                const SizedBox(height: 16),
+                                if (items.length > 1)
+                                  GridView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: items.length - 1,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 12,
+                                          mainAxisSpacing: 12,
+                                          childAspectRatio: 0.77,
+                                        ),
+                                    itemBuilder: (context, index) {
+                                      return ItemCard(
+                                        item: items[index + 1],
+                                        isLarge: false,
+                                      );
+                                    },
+                                  ),
+                              ],
+                            ),
+                          ],
                         ],
                       );
                     }),
