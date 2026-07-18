@@ -12,6 +12,7 @@ class AuthRepository {
     required String email,
     required String password,
     required String username,
+    required String phoneNumber
   }) async {
     final response = await SupabaseService.client.auth.signUp(
       email: email,
@@ -27,6 +28,7 @@ class AuthRepository {
     await SupabaseService.client.from('profiles').insert({
       'id': user.id,
       'username': username,
+      'phone_number': phoneNumber,
     });
   }
 

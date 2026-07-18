@@ -4,6 +4,7 @@ import 'package:findit/Features/Home/Bindings/home_binding.dart';
 import 'package:findit/Features/Home/Model/item_model.dart';
 import 'package:findit/Features/Home/View/home_page.dart';
 import 'package:findit/Features/Home/View/view_all_page.dart';
+import 'package:findit/Features/ItemDetail/Binding/item_detail_binding.dart';
 import 'package:findit/Features/ItemDetail/Views/item_detail_page.dart';
 import 'package:findit/Features/Onboarding/onboarding_page.dart';
 import 'package:findit/Features/Report/Binding/report_binding.dart';
@@ -57,6 +58,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.detailPage,
       builder: (context, state) {
+        ItemDetailBinding().dependencies();
         final item = state.extra as ItemModel;
         return ItemDetailPage(item: item);
       },

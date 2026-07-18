@@ -8,6 +8,7 @@ class ItemModel {
   final DateTime createdAt;
   final String? userId;
   final String username;
+  final String phoneNumber;
 
   ItemModel({
     required this.id,
@@ -19,6 +20,7 @@ class ItemModel {
     required this.createdAt,
     this.userId,
     required this.username,
+    required this.phoneNumber,
   });
 
   factory ItemModel.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class ItemModel {
       createdAt: DateTime.parse(json["created_at"]),
       userId: json["user_id"],
       username: json["profiles"]?["username"] ?? "Unknown User",
+      phoneNumber: json["profiles"]?["phone_number"] ?? "",
     );
   }
 }

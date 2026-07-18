@@ -20,6 +20,7 @@ class AuthController extends GetxController {
   final registerEmailController = TextEditingController();
   final registerPasswordController = TextEditingController();
   final registerConfirmPasswordController = TextEditingController();
+  final registerPhoneNumberController = TextEditingController();
 
   Future<void> login(BuildContext context) async {
     isLoading.value = true;
@@ -73,10 +74,15 @@ class AuthController extends GetxController {
         throw Exception("Passwords do not match");
       }
 
+      if (registerPhoneNumberController.text.trim().isEmpty) {
+        throw Exception("WhatsApp number is required");
+      }
+
       await _repository.register(
         username: registerUsernameController.text.trim(),
         email: registerEmailController.text.trim(),
         password: registerPasswordController.text,
+        phoneNumber: registerPhoneNumberController.text
       );
 
       SnackbarHelper.success(context, "Account created successfully");
@@ -110,6 +116,7 @@ class AuthController extends GetxController {
     registerEmailController.dispose();
     registerPasswordController.dispose();
     registerConfirmPasswordController.dispose();
+    registerPhoneNumberController.dispose();
 
     super.onClose();
   }

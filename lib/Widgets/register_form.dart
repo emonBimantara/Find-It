@@ -7,6 +7,7 @@ class RegisterForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
+  final TextEditingController phoneNumberController;
   final bool isLoading;
 
   final VoidCallback onRegister;
@@ -18,6 +19,7 @@ class RegisterForm extends StatelessWidget {
     required this.passwordController,
     required this.confirmPasswordController,
     required this.onRegister,
+    required this.phoneNumberController,
     this.isLoading = false,
   });
 
@@ -98,6 +100,24 @@ class RegisterForm extends StatelessWidget {
           prefixIcon: Icon(Icons.lock_outline),
         ),
 
+        SizedBox(height: 20),
+
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Whatsapp Number",
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ),
+        SizedBox(height: 10),
+
+        CustomTextField(
+          controller: phoneNumberController,
+          hintText: "628123456789",
+          keyboardType: TextInputType.phone,
+          textInputAction: TextInputAction.next,
+          prefixIcon: Icon(Icons.phone),
+        ),
         SizedBox(height: 24),
 
         CustomButton(

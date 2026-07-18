@@ -6,7 +6,8 @@ class HomeRepository {
     final resp = await SupabaseService.client.from("items").select('''
       *,
       profiles (
-        username
+        username,
+        phone_number
       )
     ''');
 
@@ -28,7 +29,7 @@ class HomeRepository {
           .single();
 
       return profile['username'] ?? "User";
-    } catch (e, stackTrace) {
+    } catch (e) {
       return "User";
     }
   }

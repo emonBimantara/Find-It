@@ -85,6 +85,8 @@ class AuthPage extends StatelessWidget {
                                     authController.registerPasswordController,
                                 confirmPasswordController: authController
                                     .registerConfirmPasswordController,
+                                phoneNumberController: authController
+                                    .registerPhoneNumberController,
                                 isLoading: authController.isLoading.value,
                                 onRegister: () =>
                                     authController.register(context),

@@ -1,7 +1,9 @@
 import 'package:findit/Features/Home/Model/item_model.dart';
+import 'package:findit/Features/ItemDetail/Controller/item_detail_controller.dart';
 import 'package:findit/Widgets/custom_button.dart';
 import 'package:findit/Widgets/info_card.dart'; // Import custom widget-nya
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +19,7 @@ class ItemDetailPage extends StatefulWidget {
 
 class _ItemDetailPageState extends State<ItemDetailPage> {
   final PageController _pageController = PageController();
+  final ItemDetailController controller = Get.find<ItemDetailController>();
 
   @override
   void dispose() {
@@ -213,7 +216,16 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
 
                     SizedBox(height: 30),
 
-                    CustomButton(text: "Contact Reporter"),
+                    CustomButton(
+                      text: "Contact Reporter", 
+                      onPressed: () {
+                        controller.contactReporter(
+                          phoneNumber: widget.item.phoneNumber,
+                          username: widget.item.username,
+                          itemTitle: widget.item.title,
+                        );
+                      },
+                    ),
 
                     SizedBox(height: 10)
                   ],
