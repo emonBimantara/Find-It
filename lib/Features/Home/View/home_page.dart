@@ -38,7 +38,6 @@ class HomePage extends StatelessWidget {
                     onTap: () => authController.logout(context),
                     child: Icon(Icons.person, size: 30),
                   ),
-
                   Text(
                     "Find It",
                     style: TextStyle(
@@ -47,7 +46,6 @@ class HomePage extends StatelessWidget {
                       color: Color(0xFF3525CD),
                     ),
                   ),
-
                   Icon(Icons.notifications, size: 30, color: Color(0xFF3525CD)),
                 ],
               ),
@@ -62,6 +60,7 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 20),
                     Obx(
                       () => Text(
                         "Hello, ${homeController.username.value}!",
@@ -71,14 +70,11 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 5),
-
                     Text(
                       "What are you looking for today?",
                       style: TextStyle(fontSize: 15, color: Color(0xFF464555)),
                     ),
-
                     SizedBox(height: 20),
 
                     CustomTextField(
@@ -86,7 +82,6 @@ class HomePage extends StatelessWidget {
                       hintText: "Search items...",
                       prefixIcon: Icon(Icons.search),
                     ),
-
                     SizedBox(height: 15),
 
                     SizedBox(
@@ -111,7 +106,6 @@ class HomePage extends StatelessWidget {
                         },
                       ),
                     ),
-
                     SizedBox(height: 30),
 
                     Row(
@@ -124,27 +118,29 @@ class HomePage extends StatelessWidget {
                             fontSize: 25,
                           ),
                         ),
-                        Text(
-                          "View all",
-                          style: TextStyle(
-                            color: Color(0xFF3525CD),
-                            fontWeight: FontWeight.w600,
+                        GestureDetector(
+                          onTap: () => context.push(AppRoutes.viewAllPage),
+                          child: Text(
+                            "View all",
+                            style: TextStyle(
+                              color: Color(0xFF3525CD),
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ],
                     ),
-
                     SizedBox(height: 16),
 
                     Obx(() {
                       if (homeController.isLoading.value) {
-                        return const Center(child: CircularProgressIndicator());
+                        return Center(child: CircularProgressIndicator());
                       }
 
-                      final items = homeController.filteredItems;
+                      final items = homeController.recentItems;
 
                       if (items.isEmpty) {
-                        return const Center(child: Text("No items found"));
+                        return Center(child: Text("No items found"));
                       }
 
                       return Column(
@@ -152,12 +148,12 @@ class HomePage extends StatelessWidget {
                         children: [
                           ItemCard(item: items.first, isLarge: true),
 
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
 
                           if (items.length > 1)
                             GridView.builder(
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: items.length - 1,
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
@@ -188,7 +184,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: Color(0xFF3525CD),
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        onPressed: () => context.go(AppRoutes.reportPage),
+        onPressed: () => context.push(AppRoutes.reportPage),
         child: Icon(Icons.add, size: 28),
       ),
     );

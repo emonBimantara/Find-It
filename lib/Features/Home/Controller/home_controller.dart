@@ -58,6 +58,10 @@ class HomeController extends GetxController {
     }).toList();
   }
 
+  List<ItemModel> get recentItems {
+    return filteredItems.take(3).toList();
+  }
+
   void changeCategory(String category) {
     selectedCategory.value = category;
   }
@@ -67,5 +71,4 @@ class HomeController extends GetxController {
     searchController.dispose();
     super.onClose();
   }
-
 }

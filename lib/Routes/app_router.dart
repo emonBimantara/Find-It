@@ -2,6 +2,7 @@ import 'package:findit/Features/Auth/Binding/auth_binding.dart';
 import 'package:findit/Features/Auth/View/auth_page.dart';
 import 'package:findit/Features/Home/Bindings/home_binding.dart';
 import 'package:findit/Features/Home/View/home_page.dart';
+import 'package:findit/Features/Home/View/view_all_page.dart';
 import 'package:findit/Features/Onboarding/onboarding_page.dart';
 import 'package:findit/Features/Report/Binding/report_binding.dart';
 import 'package:findit/Features/Report/Views/report_page.dart';
@@ -44,6 +45,11 @@ final GoRouter appRouter = GoRouter(
         ReportBinding().dependencies();
         return ReportPage();
       },
+    ),
+
+    GoRoute(
+      path: AppRoutes.viewAllPage,
+      builder: (context, state) => ViewAllPage(),
     ),
   ],
 );
