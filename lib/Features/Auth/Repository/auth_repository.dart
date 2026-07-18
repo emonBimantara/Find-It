@@ -11,13 +11,23 @@ class AuthRepository {
   Future<void> register({
     required String email,
     required String password,
-    required String username
+    required String username,
   }) async {
-    await SupabaseService.client.auth.signUp(
+    final response = await SupabaseService.client.auth.signUp(
       email: email,
       password: password,
-      data: {'username': username},
     );
+
+    final user = response.user;
+
+    if (user == null) {
+      throw Exception("Failed to create account.");
+    }
+
+    await SupabaseService.client.from('profiles').insert({
+      'id': user.id,
+      'username': username,
+    });
   }
 
   Future<void> logout() async {

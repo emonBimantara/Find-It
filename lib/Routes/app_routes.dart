@@ -6,4 +6,5 @@ class AppRoutes {
   static const homePage = "/homePage";
   static const reportPage = "/reportPage";
   static const viewAllPage = "/viewAllPage";
+  static const detailPage = "/detailPage";
 }

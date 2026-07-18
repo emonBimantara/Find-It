@@ -1,4 +1,3 @@
-import 'package:findit/Features/Auth/Repository/supabase_service.dart';
 import 'package:findit/Features/Home/Model/item_model.dart';
 import 'package:findit/Features/Home/Repository/home_repository.dart';
 import 'package:flutter/widgets.dart';
@@ -29,9 +28,8 @@ class HomeController extends GetxController {
     });
   }
 
-  void loadUser() {
-    final user = SupabaseService.client.auth.currentUser;
-    username.value = user?.userMetadata?['username'] ?? "User";
+  Future<void> loadUser() async {
+    username.value = await _repository.getUsername();
   }
 
   Future<void> fetchItems() async {

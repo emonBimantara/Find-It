@@ -149,7 +149,7 @@ class HomePage extends StatelessWidget {
                           SizedBox(height: 16),
 
                           if (homeController.isLoading.value) ...[
-                            const Center(child: CircularProgressIndicator()),
+                            Center(child: CircularProgressIndicator()),
                           ] else if (items.isEmpty) ...[
                             Center(
                               child: Padding(
@@ -170,12 +170,18 @@ class HomePage extends StatelessWidget {
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 12,
                                     mainAxisSpacing: 12,
-                                    childAspectRatio: 0.77,
+                                    childAspectRatio: 0.60,
                                   ),
                               itemBuilder: (context, index) {
+                                final item = items[index];
+
                                 return ItemCard(
-                                  item: items[index],
-                                  isLarge: false,
+                                  item: item,
+                                  isLarge: true,
+                                  onTap: () => context.push(
+                                    AppRoutes.detailPage,
+                                    extra: item,
+                                  ),
                                 );
                               },
                             ),
@@ -183,8 +189,15 @@ class HomePage extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ItemCard(item: items.first, isLarge: true),
-                                const SizedBox(height: 16),
+                                ItemCard(
+                                  item: items.first,
+                                  isLarge: true,
+                                  onTap: () => context.push(
+                                    AppRoutes.detailPage,
+                                    extra: items.first,
+                                  ),
+                                ),
+                                SizedBox(height: 16),
                                 if (items.length > 1)
                                   GridView.builder(
                                     shrinkWrap: true,
@@ -199,9 +212,17 @@ class HomePage extends StatelessWidget {
                                           childAspectRatio: 0.77,
                                         ),
                                     itemBuilder: (context, index) {
+                                      final item = items[index + 1];
+
                                       return ItemCard(
-                                        item: items[index + 1],
+                                        item: item,
                                         isLarge: false,
+                                        onTap: () {
+                                          context.push(
+                                            AppRoutes.detailPage,
+                                            extra: item,
+                                          );
+                                        },
                                       );
                                     },
                                   ),
