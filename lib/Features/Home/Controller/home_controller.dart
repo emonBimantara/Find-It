@@ -19,7 +19,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
+    print("HomeController onInit");
     loadUser();
     fetchItems();
 
@@ -29,7 +29,9 @@ class HomeController extends GetxController {
   }
 
   Future<void> loadUser() async {
+    print("loadUser()");
     username.value = await _repository.getUsername();
+    print("Username: ${username.value}");
   }
 
   Future<void> fetchItems() async {

@@ -1,4 +1,5 @@
 import 'package:findit/Features/Auth/Repository/auth_repository.dart';
+import 'package:findit/Features/Home/Controller/home_controller.dart';
 import 'package:findit/Routes/app_routes.dart';
 import 'package:findit/Utils/auth_error_message.dart';
 import 'package:findit/Utils/snackbar_helper.dart';
@@ -82,7 +83,7 @@ class AuthController extends GetxController {
         username: registerUsernameController.text.trim(),
         email: registerEmailController.text.trim(),
         password: registerPasswordController.text,
-        phoneNumber: registerPhoneNumberController.text
+        phoneNumber: registerPhoneNumberController.text,
       );
 
       SnackbarHelper.success(context, "Account created successfully");
@@ -98,6 +99,10 @@ class AuthController extends GetxController {
   Future<void> logout(BuildContext context) async {
     try {
       await _repository.logout();
+
+      if (Get.isRegistered<HomeController>()) {
+        Get.delete<HomeController>();
+      }
 
       SnackbarHelper.success(context, "Logged out successfully.");
 
