@@ -1,7 +1,14 @@
+import 'package:findit/Features/Auth/Repository/supabase_service.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ItemDetailController extends GetxController {
+  bool isMyReport(String? userId) {
+    final currentUser = SupabaseService.client.auth.currentUser;
+
+    return currentUser != null && currentUser.id == userId;
+  }
+
   Future<void> contactReporter({
     required String phoneNumber,
     required String username,

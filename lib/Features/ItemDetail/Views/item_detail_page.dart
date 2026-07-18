@@ -191,7 +191,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                         ),
                       ),
                       title: "REPORTED BY",
-                      subtitle: widget.item.username
+                      subtitle: widget.item.username,
                     ),
 
                     SizedBox(height: 30),
@@ -216,18 +216,20 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
 
                     SizedBox(height: 30),
 
-                    CustomButton(
-                      text: "Contact Reporter", 
-                      onPressed: () {
-                        controller.contactReporter(
-                          phoneNumber: widget.item.phoneNumber,
-                          username: widget.item.username,
-                          itemTitle: widget.item.title,
-                        );
-                      },
-                    ),
+                    if (!controller.isMyReport(widget.item.userId)) ...[
+                      CustomButton(
+                        text: "Contact Reporter",
+                        onPressed: () {
+                          controller.contactReporter(
+                            phoneNumber: widget.item.phoneNumber,
+                            username: widget.item.username,
+                            itemTitle: widget.item.title,
+                          );
+                        },
+                      ),
 
-                    SizedBox(height: 10)
+                      SizedBox(height: 10),
+                    ],
                   ],
                 ),
               ),
