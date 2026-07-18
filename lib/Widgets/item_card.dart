@@ -34,12 +34,23 @@ class ItemCard extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(16),
                 ),
-                child: item.imageUrl != null
+                child: item.imageUrls.isNotEmpty
                     ? Image.network(
-                        item.imageUrl!,
+                        item.imageUrls.first,
                         height: isLarge ? 180 : 120,
                         width: double.infinity,
                         fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) {
+                          return Container(
+                            height: isLarge ? 180 : 120,
+                            width: double.infinity,
+                            color: Color(0xFFEBF0FF),
+                            child: Icon(
+                              Icons.broken_image,
+                              color: Colors.grey,
+                            ),
+                          );
+                        },
                       )
                     : Container(
                         height: isLarge ? 180 : 120,
@@ -65,11 +76,7 @@ class ItemCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (isLost) ...[
-                        Icon(
-                          Icons.error_outline,
-                          color: Colors.red,
-                          size: 14,
-                        ),
+                        Icon(Icons.error_outline, color: Colors.red, size: 14),
                         SizedBox(width: 4),
                       ],
 
@@ -118,10 +125,7 @@ class ItemCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         item.location,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.black54,
-                        ),
+                        style: TextStyle(fontSize: 13, color: Colors.black54),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -139,10 +143,7 @@ class ItemCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         "${item.createdAt.day}/${item.createdAt.month}/${item.createdAt.year}",
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.black54,
-                        ),
+                        style: TextStyle(fontSize: 13, color: Colors.black54),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

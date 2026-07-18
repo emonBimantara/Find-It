@@ -1,11 +1,13 @@
 import 'package:findit/Constants/item_categories.dart';
 import 'package:findit/Features/Auth/Controller/auth_controller.dart';
 import 'package:findit/Features/Home/Controller/home_controller.dart';
+import 'package:findit/Routes/app_routes.dart';
 import 'package:findit/Widgets/category_chip.dart';
 import 'package:findit/Widgets/custom_text_field.dart';
 import 'package:findit/Widgets/item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -180,6 +182,14 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF3525CD),
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        onPressed: () => context.go(AppRoutes.reportPage),
+        child: Icon(Icons.add, size: 28),
       ),
     );
   }

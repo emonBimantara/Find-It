@@ -1,5 +1,5 @@
 import 'package:findit/Features/Auth/Controller/auth_controller.dart';
-import 'package:findit/Widgets/auth_switch.dart';
+import 'package:findit/Widgets/custom_toggle_switch.dart';
 import 'package:findit/Widgets/login_form.dart';
 import 'package:findit/Widgets/register_form.dart';
 import 'package:flutter/material.dart';
@@ -49,24 +49,22 @@ class AuthPage extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                 ),
-
                 child: Obx(
                   () => Column(
                     children: [
-                      AuthSwitch(
-                        isLogin: authController.isLogin.value,
-                        onLoginTap: () {
-                          authController.isLogin.value = true;
-                        },
-                        onRegisterTap: () {
-                          authController.isLogin.value = false;
+                      CustomToggleSwitch(
+                        leftText: "Login",
+                        rightText: "Register",
+                        isLeftSelected: authController.isLogin.value,
+                        onToggle: (value) {
+                          authController.isLogin.value = value;
                         },
                       ),
 
                       SizedBox(height: 24),
 
                       AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 350),
+                        duration: Duration.zero,
                         child: authController.isLogin.value
                             ? LoginForm(
                                 key: const ValueKey("login"),

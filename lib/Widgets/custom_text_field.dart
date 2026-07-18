@@ -13,6 +13,8 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final bool readOnly;
   final int maxLines;
+  final bool enabled;
+  final String? labelText;
 
   const CustomTextField({
     super.key,
@@ -27,6 +29,8 @@ class CustomTextField extends StatelessWidget {
     this.onTap,
     this.readOnly = false,
     this.maxLines = 1,
+    this.enabled = true,
+    this.labelText,
   });
 
   @override
@@ -40,6 +44,7 @@ class CustomTextField extends StatelessWidget {
       onTap: onTap,
       readOnly: readOnly,
       maxLines: obscureText ? 1 : maxLines,
+      enabled: enabled,
       style: const TextStyle(fontSize: 15, color: Color(0xFF1C1C1C)),
       decoration: InputDecoration(
         hintText: hintText,
@@ -50,6 +55,7 @@ class CustomTextField extends StatelessWidget {
 
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
+        labelText: labelText,
 
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),

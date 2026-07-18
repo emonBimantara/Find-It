@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
-class AuthSwitch extends StatelessWidget {
-  final bool isLogin;
-  final VoidCallback onLoginTap;
-  final VoidCallback onRegisterTap;
+class CustomToggleSwitch extends StatelessWidget {
+  final String leftText;
+  final String rightText;
+  final bool isLeftSelected;
+  final Function(bool) onToggle;
 
-  const AuthSwitch({
+  const CustomToggleSwitch({
     super.key,
-    required this.isLogin,
-    required this.onLoginTap,
-    required this.onRegisterTap,
+    required this.leftText,
+    required this.rightText,
+    required this.isLeftSelected,
+    required this.onToggle,
   });
 
   @override
@@ -17,28 +19,28 @@ class AuthSwitch extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: const Color(0xFFE9EDFF),
+        color: Color(0xFFE9EDFF),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: onLoginTap,
+              onTap: () => onToggle(true),
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 250),
+                duration: Duration.zero,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: isLogin ? Colors.white : Colors.transparent,
+                  color: isLeftSelected ? Colors.white : Colors.transparent,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  "Login",
+                  leftText,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    color: isLogin
-                        ? const Color(0xFF3525CD)
+                    color: isLeftSelected
+                        ? Color(0xFF3525CD)
                         : Colors.grey.shade700,
                   ),
                 ),
@@ -48,21 +50,21 @@ class AuthSwitch extends StatelessWidget {
 
           Expanded(
             child: GestureDetector(
-              onTap: onRegisterTap,
+              onTap: () => onToggle(false),
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 250),
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                duration: Duration.zero,
+                padding: EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: !isLogin ? Colors.white : Colors.transparent,
+                  color: !isLeftSelected ? Colors.white : Colors.transparent,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  "Register",
+                  rightText,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    color: !isLogin
-                        ? const Color(0xFF3525CD)
+                    color: !isLeftSelected
+                        ? Color(0xFF3525CD)
                         : Colors.grey.shade700,
                   ),
                 ),

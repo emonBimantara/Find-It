@@ -4,4 +4,5 @@ class AppRoutes {
   static const authPage = "/auth";
   static const registerPage = "/registerPage";
   static const homePage = "/homePage";
+  static const reportPage = "/reportPage";
 }

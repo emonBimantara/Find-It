@@ -3,7 +3,7 @@ class ItemModel {
   final String title;
   final String description;
   final String category;
-  final String? imageUrl;
+  final List<String> imageUrls;
   final String location;
   final DateTime createdAt;
   final String? userId;
@@ -13,7 +13,7 @@ class ItemModel {
     required this.title,
     required this.description,
     required this.category,
-    this.imageUrl,
+    required this.imageUrls,
     required this.location,
     required this.createdAt,
     this.userId,
@@ -25,7 +25,7 @@ class ItemModel {
       title: json["title"],
       description: json["description"],
       category: json["category"],
-      imageUrl: json["image_url"],
+      imageUrls: List<String>.from(json["image_urls"] ?? []),
       location: json["location"],
       createdAt: DateTime.parse(json["created_at"]),
       userId: json["user_id"],
