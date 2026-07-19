@@ -13,15 +13,15 @@ class ProfilePage extends StatelessWidget {
     final controller = Get.find<ProfileController>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FF),
+      backgroundColor: Color(0xFFF9F9FF),
       body: SafeArea(
         child: Obx(() {
           if (controller.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           }
 
           if (controller.profile.value == null) {
-            return const Center(child: Text("Profile not found"));
+            return Center(child: Text("Profile not found"));
           }
 
           final profile = controller.profile.value!;
@@ -30,14 +30,14 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
 
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
                     vertical: 10,
                   ),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(color: Color(0xFFE5E7EB)),
                     ),
@@ -45,11 +45,11 @@ class ProfilePage extends StatelessWidget {
                   child: Row(
                     children: [
                       BackButton(
-                        color: const Color(0xFF3525CD),
+                        color: Color(0xFF3525CD),
                         style: IconButton.styleFrom(iconSize: 32),
                       ),
-                      const SizedBox(width: 10),
-                      const Text(
+                      SizedBox(width: 10),
+                      Text(
                         "Profile",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -61,7 +61,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 Center(
                   child: Column(
@@ -71,36 +71,50 @@ class ProfilePage extends StatelessWidget {
                           Container(
                             width: 180,
                             height: 180,
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: const Color(0xFFEEECFF),
+                              color: Color(0xFFEEECFF),
                               border: Border.all(color: Colors.white, width: 4),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.08),
                                   blurRadius: 12,
-                                  offset: const Offset(0, 4),
+                                  offset: Offset(0, 4),
                                 ),
                               ],
-                              image: const DecorationImage(
-                                image: NetworkImage(
-                                  "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=150",
-                                ),
-                                fit: BoxFit.cover,
-                              ),
+                              image:
+                                  profile.avatarUrl != null &&
+                                      profile.avatarUrl!.isNotEmpty
+                                  ? DecorationImage(
+                                      image: NetworkImage(profile.avatarUrl!),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null,
                             ),
+                            child:
+                                profile.avatarUrl == null ||
+                                    profile.avatarUrl!.isEmpty
+                                ? Icon(
+                                    Icons.person,
+                                    size: 100,
+                                    color: Color(0xFF3525CD),
+                                  )
+                                : null,
                           ),
 
                           Positioned(
                             bottom: 2,
                             right: 2,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                controller.pickAndUploadAvatar();
+                              },
                               borderRadius: BorderRadius.circular(30),
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF3525CD),
+                                  color: Color(0xFF3525CD),
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.white,
@@ -112,11 +126,11 @@ class ProfilePage extends StatelessWidget {
                                         alpha: 0.15,
                                       ),
                                       blurRadius: 6,
-                                      offset: const Offset(0, 3),
+                                      offset: Offset(0, 3),
                                     ),
                                   ],
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.camera_alt,
                                   color: Colors.white,
                                   size: 30,
@@ -127,9 +141,9 @@ class ProfilePage extends StatelessWidget {
                         ],
                       ),
 
-                      const SizedBox(height: 15),
+                      SizedBox(height: 15),
 
-                      const Text(
+                      Text(
                         "Profile Picture",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -142,10 +156,10 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -169,11 +183,11 @@ class ProfilePage extends StatelessWidget {
                         onEditTap: () {},
                       ),
 
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text(
                             "Activity Overview",
                             style: TextStyle(
@@ -191,14 +205,13 @@ class ProfilePage extends StatelessWidget {
                         ],
                       ),
 
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
 
                       ProfileReportCounter(
                         lostCount: controller.lostCount.value,
                         foundCount: controller.foundCount.value,
                       ),
-
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30),
                     ],
                   ),
                 ),
