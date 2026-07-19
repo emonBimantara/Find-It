@@ -7,6 +7,7 @@ import 'package:findit/Features/Home/View/view_all_page.dart';
 import 'package:findit/Features/ItemDetail/Binding/item_detail_binding.dart';
 import 'package:findit/Features/ItemDetail/Views/item_detail_page.dart';
 import 'package:findit/Features/Onboarding/onboarding_page.dart';
+import 'package:findit/Features/Profile/Binding/profile_binding.dart';
 import 'package:findit/Features/Profile/Views/profile_page.dart';
 import 'package:findit/Features/Report/Binding/report_binding.dart';
 import 'package:findit/Features/Report/Views/report_page.dart';
@@ -67,7 +68,10 @@ final GoRouter appRouter = GoRouter(
 
     GoRoute(
       path: AppRoutes.profilePage,
-      builder: (context, state) => ProfilePage(),
+      builder: (context, state) {
+        ProfileBinding().dependencies();
+        return ProfilePage();
+      }
     ),
 
     // GoRoute(
