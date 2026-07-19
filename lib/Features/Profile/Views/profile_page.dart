@@ -1,4 +1,5 @@
 import 'package:findit/Features/Profile/Controller/profile_controller.dart';
+import 'package:findit/Utils/phone_number_helper.dart';
 import 'package:findit/Widgets/profile_info_field.dart';
 import 'package:findit/Widgets/profile_report_counter.dart';
 import 'package:flutter/material.dart';
@@ -16,15 +17,11 @@ class ProfilePage extends StatelessWidget {
       body: SafeArea(
         child: Obx(() {
           if (controller.isLoading.value) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (controller.profile.value == null) {
-            return const Center(
-              child: Text("Profile not found"),
-            );
+            return const Center(child: Text("Profile not found"));
           }
 
           final profile = controller.profile.value!;
@@ -77,10 +74,7 @@ class ProfilePage extends StatelessWidget {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: const Color(0xFFEEECFF),
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 4,
-                              ),
+                              border: Border.all(color: Colors.white, width: 4),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.08),
@@ -114,7 +108,9 @@ class ProfilePage extends StatelessWidget {
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.15),
+                                      color: Colors.black.withValues(
+                                        alpha: 0.15,
+                                      ),
                                       blurRadius: 6,
                                       offset: const Offset(0, 3),
                                     ),
@@ -167,7 +163,9 @@ class ProfilePage extends StatelessWidget {
 
                       ProfileInfoField(
                         label: "Phone Number",
-                        value: profile.phoneNumber,
+                        value: PhoneNumberHelper.formatDisplay(
+                          profile.phoneNumber,
+                        ),
                         onEditTap: () {},
                       ),
 
@@ -195,9 +193,9 @@ class ProfilePage extends StatelessWidget {
 
                       const SizedBox(height: 10),
 
-                      const ProfileReportCounter(
-                        lostCount: 5,
-                        foundCount: 3,
+                      ProfileReportCounter(
+                        lostCount: controller.lostCount.value,
+                        foundCount: controller.foundCount.value,
                       ),
 
                       const SizedBox(height: 30),

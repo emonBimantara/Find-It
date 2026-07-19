@@ -13,4 +13,22 @@ class ProfileRepository {
 
     return ProfileModel.fromJson(profile, user.email ?? "");
   }
+
+  Future<Map<String, int>> getReportCount() async {
+    final user = SupabaseService.client.auth.currentUser;
+
+    if (user == null) {
+      throw Exception("User not logged in");
+    }
+
+    final items = await SupabaseService.client
+        .from("items")
+        .select("category")
+        .eq("user_id", user.id);
+
+    final lost = items.where((e) => e["category"] == "lost").length;
+    final found = items.where((e) => e["category"] == "found").length;
+
+    return {"lost": lost, "found": found};
+  }
 }
