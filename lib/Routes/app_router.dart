@@ -7,6 +7,7 @@ import 'package:findit/Features/Home/View/view_all_page.dart';
 import 'package:findit/Features/ItemDetail/Binding/item_detail_binding.dart';
 import 'package:findit/Features/ItemDetail/Views/item_detail_page.dart';
 import 'package:findit/Features/Onboarding/onboarding_page.dart';
+import 'package:findit/Features/Profile/Views/profile_page.dart';
 import 'package:findit/Features/Report/Binding/report_binding.dart';
 import 'package:findit/Features/Report/Views/report_page.dart';
 import 'package:findit/Features/Splash/splash_screen.dart';
@@ -63,5 +64,15 @@ final GoRouter appRouter = GoRouter(
         return ItemDetailPage(item: item);
       },
     ),
+
+    GoRoute(
+      path: AppRoutes.profilePage,
+      builder: (context, state) => ProfilePage(),
+    ),
+
+    // GoRoute(
+    //   path: AppRoutes.historyPage,
+    //   builder: (context, state) => HistoryPage(),
+    // ),
   ],
 );
