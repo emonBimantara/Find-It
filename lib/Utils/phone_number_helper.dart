@@ -12,4 +12,14 @@ class PhoneNumberHelper {
 
     return phone;
   }
+
+  static String formatDisplay(String phone) {
+    final normalized = normalize(phone);
+
+    if (normalized.startsWith('62')) {
+      return '+$normalized';
+    }
+
+    return phone;
+  }
 }
