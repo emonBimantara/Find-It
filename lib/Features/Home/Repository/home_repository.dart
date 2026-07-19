@@ -9,7 +9,8 @@ class HomeRepository {
         username,
         phone_number
       )
-    ''');
+    ''')
+    .order('created_at', ascending: false);
 
     return resp.map<ItemModel>((json) => ItemModel.fromJson(json)).toList();
   }

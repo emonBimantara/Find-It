@@ -34,7 +34,7 @@ class ViewAllPage extends StatelessWidget {
                   InkWell(
                     borderRadius: BorderRadius.circular(30),
                     onTap: () => authController.logout(context),
-                    child: const Icon(Icons.person, size: 30),
+                    child: Icon(Icons.person, size: 30),
                   ),
                   Text(
                     "Find It",
@@ -105,7 +105,7 @@ class ViewAllPage extends StatelessWidget {
                 final items = homeController.filteredItems;
 
                 if (items.isEmpty) {
-                  return const Center(
+                  return Center(
                     child: Text(
                       "No items found matching your criteria",
                       style: TextStyle(color: Color(0xFF464555), fontSize: 15),
